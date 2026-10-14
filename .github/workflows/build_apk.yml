@@ -25,6 +25,12 @@ jobs:
       - name: Accept Android licenses
         run: yes | flutter doctor --android-licenses
 
+      - name: Update Gradle Wrapper to 8.14
+        run: |
+          if [ -f "android/gradle/wrapper/gradle-wrapper.properties" ]; then
+            sed -i 's|distributionUrl=.*|distributionUrl=https\\://services.gradle.org/distributions/gradle-8.14-bin.zip|g' android/gradle/wrapper/gradle-wrapper.properties
+          fi
+
       - name: Install dependencies
         run: flutter pub get
 
