@@ -25,6 +25,11 @@ jobs:
       - name: Accept Android licenses
         run: yes | flutter doctor --android-licenses
 
+      - name: Configure Gradle Memory & Options
+        run: |
+          mkdir -p ~/.gradle
+          echo "org.gradle.jvmargs=-Xmx4096m -XX:MaxMetaspaceSize=512m" >> ~/.gradle/gradle.properties
+
       - name: Update Gradle Wrapper to 8.14
         run: |
           if [ -f "android/gradle/wrapper/gradle-wrapper.properties" ]; then
@@ -34,8 +39,8 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Build APK (Fat APK arm64/x86_64)
-        run: flutter build apk --release --android-skip-build-dependency-validation
+      - name: Build APK
+        run: flutter build apk --release --android-skip-build-dependency-validation --no-tree-shake-icons
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
