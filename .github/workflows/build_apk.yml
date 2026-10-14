@@ -31,21 +31,10 @@ jobs:
             sed -i 's|distributionUrl=.*|distributionUrl=https\\://services.gradle.org/distributions/gradle-8.14-bin.zip|g' android/gradle/wrapper/gradle-wrapper.properties
           fi
 
-      - name: Bump Android SDK versions
-        run: |
-          BUILD_GRADLE="android/app/build.gradle"
-          if [ -f "$BUILD_GRADLE" ]; then
-            # Met à jour le targetSdkVersion et compileSdkVersion à 34
-            sed -i 's/compileSdkVersion [0-9]*/compileSdkVersion 34/g' "$BUILD_GRADLE" || true
-            sed -i 's/targetSdkVersion [0-9]*/targetSdkVersion 34/g' "$BUILD_GRADLE" || true
-            sed -i 's/targetSdk [0-9]*/targetSdk 34/g' "$BUILD_GRADLE" || true
-            sed -i 's/compileSdk [0-9]*/compileSdk 34/g' "$BUILD_GRADLE" || true
-          fi
-
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Build APK
+      - name: Build APK (Fat APK arm64/x86_64)
         run: flutter build apk --release --android-skip-build-dependency-validation
 
       - name: Upload APK
