@@ -25,10 +25,13 @@ jobs:
       - name: Accept Android licenses
         run: yes | flutter doctor --android-licenses
 
-      - name: Configure Gradle Memory & Options
+      - name: Configure Gradle Memory & Target SDK
         run: |
           mkdir -p ~/.gradle
           echo "org.gradle.jvmargs=-Xmx4096m -XX:MaxMetaspaceSize=512m" >> ~/.gradle/gradle.properties
+          echo "flutter.minSdkVersion=21" >> android/gradle.properties
+          echo "flutter.targetSdkVersion=34" >> android/gradle.properties
+          echo "flutter.compileSdkVersion=34" >> android/gradle.properties
 
       - name: Update Gradle Wrapper to 8.14
         run: |
